@@ -1,9 +1,10 @@
 public class bubbleSort {
     public static void main(String[] args) {
         int MAX_NUM = 10;
+        int NUM_CAP = 100;
         int[] arr=new int[MAX_NUM];
         for (int i = 0; i < MAX_NUM; i++) {
-            arr[i] = (int)(Math.random()*MAX_NUM)+1;
+            arr[i] = (int)(Math.random()*NUM_CAP)+1;
         }
         System.out.println("Unsorted");
         for (int i = 0; i < MAX_NUM; i++) {
@@ -18,7 +19,7 @@ public class bubbleSort {
                 }
             }
         }
-        System.out.println("Sorted");
+        System.out.println("\nSorted");
         for (int i = 0; i < MAX_NUM; i++) {
             System.out.print(arr[i]+" ");
         }
