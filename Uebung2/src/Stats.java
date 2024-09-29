@@ -20,5 +20,6 @@ public class Stats {
             i++;
         }while (num>=0);
         return arr;
+
     }
 }
