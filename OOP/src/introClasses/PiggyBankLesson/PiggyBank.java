@@ -90,6 +90,56 @@ public class PiggyBank {
         }else
             return false;
     }
+    public boolean addCoin_New(PiggyBank piggy) {
+        switch (1){
+            case 1:
+                if(piggy.getCent_1()!=this.cent_1){break;}
+            case 2:
+                if(piggy.getCent_10()!=this.cent_10){break;}
+            case 3:
+                if(piggy.getCent_50()!=this.cent_50){break;}
+            case 4:
+                if(piggy.getCent_100()!=this.cent_100){break;}
+            case 5:
+                return false;
+        }
+        if(this.capacity==piggyCoins()){
+            return true;
+        }
+        if(add1Cents(piggy.getCent_1())!=0){
+            piggy.setCent_1(add1Cents(piggy.getCent_1()));
+            this.cent_1 += capacity-piggyCoins();
+            return true;
+        }else{
+            this.cent_1 += piggy.getCent_1();
+            piggy.setCent_1(0);
+        }
+        if(add10Cents(piggy.getCent_10())!=0){
+            piggy.setCent_10(add10Cents(piggy.getCent_10()));
+            this.cent_10 += capacity-piggyCoins();
+            return true;
+        }else {
+            this.cent_10 += piggy.getCent_1();
+            piggy.setCent_10(0);
+        }
+        if(add50Cents(piggy.getCent_50())!=0){
+            piggy.setCent_50(add50Cents(piggy.getCent_50()));
+            this.cent_50 += capacity-piggyCoins();
+            return true;
+        }else{
+            this.cent_50 += piggy.getCent_1();
+            piggy.setCent_50(0);
+        }
+        if(add100Cents(piggy.getCent_100())!=0){
+            piggy.setCent_100(add100Cents(piggy.getCent_100()));
+            this.cent_100 += capacity-piggyCoins();
+            return true;
+        }else{
+            this.cent_100 += piggy.getCent_100();
+            piggy.setCent_100(0);
+        }
+        return true;
+    }
     public int piggyWeight(){
         return cent_1*centWeight_1+cent_10*centWeight_10+cent_50*centWeight_50+cent_100*centWeight_100;
     }
@@ -101,5 +151,32 @@ public class PiggyBank {
         int weight2=piggyBank.piggyWeight();
         return weight1<weight2;
     }
-
+    //getter and setter
+    public int getCent_1() {
+        return cent_1;
+    }
+    public int getCent_10() {
+        return cent_10;
+    }
+    public int getCent_50() {
+        return cent_50;
+    }
+    public int getCent_100() {
+        return cent_100;
+    }
+    public int getCapacity() {
+        return capacity;
+    }
+    public void setCent_1(int cent_1) {
+        this.cent_1 = cent_1;
+    }
+    public void setCent_10(int cent_10) {
+        this.cent_10 = cent_10;
+    }
+    public void setCent_50(int cent_50) {
+        this.cent_50 = cent_50;
+    }
+    public void setCent_100(int cent_100) {
+        this.cent_100 = cent_100;
+    }
 }

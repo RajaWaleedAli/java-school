@@ -45,4 +45,7 @@ public class Library {
     public int getBookCount() {
         return count;
     }
+    public Book[] getBooks() {
+        return books;
+    }
 }
