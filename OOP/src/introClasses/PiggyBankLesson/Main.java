@@ -1,3 +1,6 @@
+/*
+ChatGPT generiert
+*/
 package introClasses.PiggyBankLesson;
 
 public class Main {
@@ -49,7 +52,9 @@ public class Main {
         boolean result = piggy1.addCoin_New(piggy2);
         System.out.println("Piggy2 erfolgreich in Piggy1 umgefüllt: " + result);
         System.out.println("Piggy1 hat jetzt " + piggy1.piggyCoins() + " Münzen.");
+        System.out.println("Ist Piggy1 aufgebrochen? " + piggy1.isBroken());
         System.out.println("Piggy2 hat jetzt " + piggy2.piggyCoins() + " Münzen.");
+        System.out.println("Ist Piggy2 aufgebrochen? " + piggy2.isBroken());
     }
 }
 

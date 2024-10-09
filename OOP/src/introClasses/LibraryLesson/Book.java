@@ -1,3 +1,8 @@
+/*
+Autor: Raja Waleed Ali
+Datum: 09.10.2024
+Beschreibung: Book klass für Bibliothek
+*/
 package introClasses.LibraryLesson;
 
 public class Book {

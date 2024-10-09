@@ -1,3 +1,8 @@
+/*
+Autor: Raja Waleed Ali
+Datum: 09.10.2024
+Beschreibung: Piggy Bank
+*/
 package introClasses.PiggyBankLesson;
 
 public class PiggyBank {
@@ -6,10 +11,10 @@ public class PiggyBank {
     private int cent_50;
     private int cent_100;
 
-    private final int centWeight_1=2;
-    private final int centWeight_10=4;
-    private final int centWeight_50=7;
-    private final int centWeight_100=7;
+    private final int centWeight_1;
+    private final int centWeight_10;
+    private final int centWeight_50;
+    private final int centWeight_100;
 
     private final int capacity;
     private boolean broken;
@@ -21,6 +26,10 @@ public class PiggyBank {
         this.cent_10 = 0;
         this.cent_50 = 0;
         this.cent_100 = 0;
+        this.centWeight_1=2;
+        this.centWeight_10=4;
+        this.centWeight_50=7;
+        this.centWeight_100=7;
     }
 
     public int add1Cents(int count) {
@@ -101,8 +110,11 @@ public class PiggyBank {
             case 4:
                 if(piggy.getCent_100()!=this.cent_100){break;}
             case 5:
+                if(piggy.getCapacity()!=this.capacity){break;}
+            case 6:
                 return false;
         }
+        piggy.setBroken(true);
         if(this.capacity==piggyCoins()){
             return true;
         }
@@ -151,6 +163,7 @@ public class PiggyBank {
         int weight2=piggyBank.piggyWeight();
         return weight1<weight2;
     }
+
     //getter and setter
     public int getCent_1() {
         return cent_1;
@@ -178,5 +191,8 @@ public class PiggyBank {
     }
     public void setCent_100(int cent_100) {
         this.cent_100 = cent_100;
+    }
+    public void setBroken(boolean broken) {
+        this.broken = broken;
     }
 }
