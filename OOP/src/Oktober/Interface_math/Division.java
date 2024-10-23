@@ -8,6 +8,7 @@ public class Division implements Expr {
         this.divisor = divisor;
     }
     public double eval() {
+        System.out.println("Division.eval()");
         return dividend.eval() / divisor.eval();
     }
 }

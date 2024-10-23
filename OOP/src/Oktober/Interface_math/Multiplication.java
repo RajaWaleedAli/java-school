@@ -8,6 +8,7 @@ public class Multiplication implements Expr {
         this.factor2 = factor2;
     }
     public double eval() {
+        System.out.println("Multiplication.eval()");
         return factor1.eval() * factor2.eval();
     }
 }

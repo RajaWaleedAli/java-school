@@ -8,6 +8,7 @@ public class Number implements Expr {
 
     @Override
     public double eval() {
+        System.out.println("Number.eval()");
         return num;
     }
 }

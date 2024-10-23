@@ -8,6 +8,7 @@ public class Addition implements Expr {
         this.addend2 = addend2;
     }
     public double eval() {
+        System.out.println("Addition.eval()");
         return addend1.eval() + addend2.eval();
     }
 }

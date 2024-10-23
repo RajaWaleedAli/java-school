@@ -8,6 +8,7 @@ public class Subtraction implements Expr {
         this.subtrahend = subtrahend;
     }
     public double eval() {
+        System.out.println("Subtraction.eval()");
         return minuend.eval() - subtrahend.eval();
     }
 }

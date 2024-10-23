@@ -8,6 +8,7 @@ public class Power implements Expr {
         this.exponent = exponent;
     }
     public double eval() {
+        System.out.println("Power.eval()");
         return Math.pow(basis.eval(), exponent.eval());
     }
 }
