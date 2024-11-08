@@ -2,27 +2,59 @@ package Robot;
 
 import java.util.Arrays;
 
-public class RemoteControl {
-    Roboter robot;
-    public RemoteControl(Roboter robot) {
-        this.robot = robot;
+public class RemoteControl implements Roboter{
+    Roboter90 robot90;
+    Roboter45 robot45;
+    private boolean chooseBot;
+    public RemoteControl(Roboter90 robot90, Roboter45 robot45) {
+        this.robot90 = robot90;
+        this.robot45 = robot45;
+        this.chooseBot = false;
     }
+    private Roboter getBot(){
+        if(chooseBot){
+            return robot45;
+        }else
+            return robot90;
+    }
+
+    @Override
+    public double[] getPos() {
+        return getBot().getPos();
+    }
+
+    @Override
+    public void advance() {
+        getBot().advance();
+    }
+
+    @Override
+    public void turnLeft() {
+        getBot().turnLeft();
+    }
+
+    @Override
+    public void turnRight() {
+        getBot().turnRight();
+    }
+
     public void controls(String command) {
         for (char c : command.toCharArray()) {
             switch (c) {
                 case 'r':
-                    robot.turnRight();
+                    turnRight();
                     break;
                 case 'l':
-                    robot.turnLeft();
+                    turnLeft();
                     break;
                 case 'a':
-                    robot.advance();
+                    advance();
                     break;
                 case 'p':
-                    System.out.println(Arrays.toString(robot.getPos()));
+                    System.out.println("Current Bot: "+chooseBot+"\n"+Arrays.toString(getBot().getPos()));
                     break;
                 default:
+                    chooseBot=!chooseBot;
                     break;
             }
         }
