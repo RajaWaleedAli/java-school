@@ -2,19 +2,19 @@ package Socken;
 
 import java.awt.*;
 
-public class Socke extends Kleidung{
-    Socke(String farbe) {
+public class Hose extends Kleidung {
+    Hose(String farbe) {
         super(farbe);
     }
-    Socke() {
+    Hose() {
         this("Schwarz");
     }
-    Socke(Color farbe){
+    Hose(Color farbe){
         super(farbe);
     }
     @Override
     public void trockne(){
-        System.out.println("Socke getrocknet");
+        System.out.println("Hose getrocknet");
         super.trockne();
     }
 
