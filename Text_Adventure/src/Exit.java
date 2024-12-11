@@ -8,12 +8,15 @@ public class Exit extends Entety {
 
     @Override
     public String toString() {
-        return "Exit{" +
-                "\nName = " + this.getName() +
-                "\nDescription="+this.getDescription()+
-                "\nDestination=" + this.destination.getName() +
-                "\n}";
+        StringBuilder sb = new StringBuilder();
+        sb.append("=== Exit ===\n")
+                .append("Name: ").append(this.getName() != null ? this.getName() : "Unknown").append("\n")
+                .append("Description: ").append(this.getDescription() != null ? this.getDescription() : "None").append("\n")
+                .append("Destination: ").append(this.destination != null && this.destination.getName() != null ? this.destination.getName() : "Unknown").append("\n");
+        return sb.toString();
     }
+
+
 
     //Getter-Setter
     public String getName() {

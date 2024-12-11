@@ -8,12 +8,15 @@ public class Thing extends Entety {
 
     @Override
     public String toString() {
-        return "Thing{" +
-                "\nName = " + this.getName() +
-                "\nDescription = "+this.getDescription()+
-                "\nLocation = " + this.location.getName() +
-                "\n}";
+        StringBuilder sb = new StringBuilder();
+        sb.append("=== Thing ===\n")
+                .append("Name: ").append(this.getName() != null ? this.getName() : "Unknown").append("\n")
+                .append("Description: ").append(this.getDescription() != null ? this.getDescription() : "None").append("\n")
+                .append("Location: ").append(this.location != null && this.location.getName() != null ? this.location.getName() : "Unknown").append("\n");
+        return sb.toString();
     }
+
+
 
     //Getter-Setter
     public String getName() {
