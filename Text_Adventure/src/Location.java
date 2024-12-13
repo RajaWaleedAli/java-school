@@ -4,11 +4,13 @@ public class Location extends Entety{
     Container items;
     ArrayList<Exit>exits;
     Location lastLocation;
+    ArrayList<NPC>NPCs;
     public Location(String name, String description, Location lastLocation) {
         super(name, description);
         this.lastLocation = lastLocation;
         this.exits = new ArrayList<>();
         this.items = new Container(null,null,this);
+        this.NPCs = new ArrayList<>();
     }
 
     public void addExit(Exit exit) {
@@ -17,6 +19,14 @@ public class Location extends Entety{
 
     public void removeExit(Exit exit) {
         exits.remove(exit);
+    }
+
+    public void addNPC(NPC npc){
+        NPCs.add(npc);
+    }
+
+    public void removeNPC(NPC npc){
+        NPCs.remove(npc);
     }
 
     public void addItems(Thing items){
@@ -34,7 +44,8 @@ public class Location extends Entety{
                 .append("Name: ").append(this.getName() != null ? this.getName() : "Unknown").append("\n")
                 .append("Description: ").append(this.getDescription() != null ? this.getDescription() : "None").append("\n")
                 .append("Items: ").append(this.items != null && this.items.getThings() != null ? this.items.getThings() : "No items here").append("\n")
-                .append("Exits: ").append(this.exits != null ? this.exits : "No exits available").append("\n")
+                .append("Exits: ").append(this.exits != null ? this.exits.getName() : "No exits available").append("\n")
+                .append("NPCs: ").append(this.items != null && this.items.getThings() != null ? this.NPCs.getName() : "No items here").append("\n")
                 .append("Last Location: ").append(this.lastLocation != null && this.lastLocation.getName() != null ? this.lastLocation.getName() : "Unknown").append("\n");
         return sb.toString();
     }
@@ -80,5 +91,13 @@ public class Location extends Entety{
 
     public void setExits(ArrayList<Exit> exits) {
         this.exits = exits;
+    }
+
+    public ArrayList<NPC> getNPCs() {
+        return NPCs;
+    }
+
+    public void setNPCs(ArrayList<NPC> NPCs) {
+        this.NPCs = NPCs;
     }
 }
