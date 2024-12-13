@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class NPC extends Entety {
+public abstract class NPC extends Entety {
     ArrayList<String> dialog;
     Location location;
     public NPC(String name, String description, Location location) {
@@ -15,11 +15,15 @@ public class NPC extends Entety {
     public void removeDialog(String dialog) {
         this.dialog.remove(dialog);
     }
-    public void speak(boolean inOrder){
-        if(inOrder){
-
+    public void speak(int index){
+        if(dialog==null){
+            System.out.println(this.getName()+": ...");
+            return;
         }
-
+        else{
+            System.out.println(this.getName()+": "+dialog.get(index));
+            dialog.remove(index);
+        }
     }
 
     //Getter-Setter
@@ -38,4 +42,6 @@ public class NPC extends Entety {
     public void setLocation(Location location) {
         this.location = location;
     }
+
+    public abstract void speak();
 }

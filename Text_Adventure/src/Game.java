@@ -34,7 +34,7 @@ public class Game {
         return null;
     }
 
-    Thing readContainer(Container container){
+    Thing readThing(Container container){
         if(container==null){
             System.out.println("Keine Items Verfuegbar!");
             return null;
@@ -105,7 +105,7 @@ public class Game {
         Player spieler = new Player("Reisender", "Ein Reisender ohne Erinnerung.");
         spieler.setCurrentLocation(verlassenerPlatz);
 
-        while(1){
+        while(true){
 
         }
     }
