@@ -16,8 +16,6 @@ public class Exit extends Entety {
         return sb.toString();
     }
 
-
-
     //Getter-Setter
     public String getName() {
         return super.getName();

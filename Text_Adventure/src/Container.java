@@ -22,7 +22,7 @@ public class Container extends Thing {
         sb.append("=== Container ===\n")
                 .append("Name: ").append(this.getName() != null ? this.getName() : "Unknown").append("\n")
                 .append("Description: ").append(this.getDescription() != null ? this.getDescription() : "None").append("\n")
-                .append("Items:\n").append(this.things != null ? this.things : "Empty").append("\n")
+                .append("Items:\n").append(!this.things.isEmpty() ? this.things : "Empty").append("\n")
                 .append("Location: ").append(this.getLocation() != null && this.getLocation().getName() != null ? this.getLocation().getName() : "Unknown").append("\n");
         return sb.toString();
     }

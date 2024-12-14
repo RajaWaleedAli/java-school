@@ -57,6 +57,7 @@ public class TestSzenario {
         printState(spieler);
 
         System.out.println(schrank.toString());
+        System.out.println(wiese.toString());
         System.out.println("Simulation beendet!");
     }
 

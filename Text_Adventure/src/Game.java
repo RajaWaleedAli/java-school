@@ -1,64 +1,4 @@
-import java.util.Scanner;
-
 public class Game {
-
-    private String read(){
-        Scanner sc = new Scanner(System.in);
-        String text = sc.nextLine();
-        sc.close();
-        return text;
-    }
-
-    private Exit readExit(Location location){
-        if(location.getExits()==null){
-            System.out.println("Keine Ausgaenge!");
-            return null;
-        }
-        String text;
-        int control=0;
-        do{
-            if(control==2){
-                System.out.println("Falsche Eingabe! Probiere es noch einmal!");
-            }
-            text=null;
-            text = read();
-            for(Exit exit : location.getExits()){
-                if(exit.getName().equals(text)){
-                    control=1;
-                    return exit;
-                }else {
-                    control=2;
-                }
-            }
-        }while (control!=1);
-        return null;
-    }
-
-    Thing readThing(Container container){
-        if(container==null){
-            System.out.println("Keine Items Verfuegbar!");
-            return null;
-        }
-        String text;
-        int control=0;
-        do{
-            if(control==2){
-                System.out.println("Falsche Eingabe! Probiere es noch einmal!");
-            }
-            text=null;
-            text = read();
-            for(Thing x : container.getThings()){
-                if(x.getName().equals(text)){
-                    control=1;
-                    return x;
-                }else {
-                    control=2;
-                }
-            }
-        }while (control!=1);
-        return null;
-    }
-
     public static void main(String[] args) {
         // Locations und Exits erstellen
         Location verlassenerPlatz = new Location("Verlassener Platz", "Ein verlassener, von Nebel umgebener Platz mit zerfallenen Statuen.", null);
@@ -106,7 +46,11 @@ public class Game {
         spieler.setCurrentLocation(verlassenerPlatz);
 
         while(true){
-
+            int mode=Read.askMode(spieler);
+            if(mode==-1){
+                System.out.println("Spiel wird Beendet!");
+                break;
+            }
         }
     }
 }

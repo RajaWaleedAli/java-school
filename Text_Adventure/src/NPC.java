@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 public abstract class NPC extends Entety {
     ArrayList<String> dialog;
@@ -17,15 +18,22 @@ public abstract class NPC extends Entety {
     public void removeDialog(String dialog) {
         this.dialog.remove(dialog);
     }
-    public void speak(int index){
-        if(index==dialog.size()-1||defaultMsg){
+    public void speak(){
+        if(defaultMsg){
             System.out.println(this.getName()+": ...");
-            defaultMsg = true;
-            return;
         }
         else{
-            System.out.println(this.getName()+": "+dialog.get(index));
+            for(int i=0; i<dialog.size(); i++){
+                System.out.println(this.getName()+": "+dialog.get(i));
+                try {
+                    TimeUnit.MILLISECONDS.sleep(500);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            defaultMsg = true;
         }
+
     }
 
     public void resetNPC(){
@@ -57,5 +65,4 @@ public abstract class NPC extends Entety {
         this.defaultMsg = defaultMsg;
     }
 
-    public abstract void speak();
 }

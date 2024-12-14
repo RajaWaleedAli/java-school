@@ -2,9 +2,9 @@ import java.util.ArrayList;
 
 public class Location extends Entety{
     Container items;
-    ArrayList<Exit>exits;
+    ArrayList<Exit> exits;
     Location lastLocation;
-    ArrayList<NPC>NPCs;
+    ArrayList<NPC> NPCs;
     public Location(String name, String description, Location lastLocation) {
         super(name, description);
         this.lastLocation = lastLocation;
@@ -43,9 +43,9 @@ public class Location extends Entety{
         sb.append("=== Location ===\n")
                 .append("Name: ").append(this.getName() != null ? this.getName() : "Unknown").append("\n")
                 .append("Description: ").append(this.getDescription() != null ? this.getDescription() : "None").append("\n")
-                .append("Items: ").append(this.items != null && this.items.getThings() != null ? this.items.getThings() : "No items here").append("\n")
-                .append("Exits: ").append(this.exits != null ? this.exits.getName() : "No exits available").append("\n")
-                .append("NPCs: ").append(this.items != null && this.items.getThings() != null ? this.NPCs.getName() : "No items here").append("\n")
+                .append("Items: ").append(this.items != null && !this.items.getThings().isEmpty() ? this.items.getThings() : "No items here").append("\n")
+                .append("Exits: \n").append(this.exits != null ? this.exits : "No exits available").append("\n")
+                .append("NPCs: \n").append(!this.NPCs.isEmpty() ? this.NPCs : "No NPCs here").append("\n")
                 .append("Last Location: ").append(this.lastLocation != null && this.lastLocation.getName() != null ? this.lastLocation.getName() : "Unknown").append("\n");
         return sb.toString();
     }
