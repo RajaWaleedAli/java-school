@@ -1,15 +1,18 @@
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
-public abstract class NPC extends Entety {
+public class NPC extends Entety {
     ArrayList<String> dialog;
     Location location;
     boolean defaultMsg;
+    String defaultText;
     public NPC(String name, String description, Location location) {
         super(name, description);
         this.location = location;
         dialog = new ArrayList<>();
         defaultMsg = false;
+        defaultText = "...";
     }
 
     public void addDialog(String dialog) {
@@ -20,7 +23,7 @@ public abstract class NPC extends Entety {
     }
     public void speak(){
         if(defaultMsg){
-            System.out.println(this.getName()+": ...");
+            System.out.println(this.getName()+": "+defaultText);
         }
         else{
             for(int i=0; i<dialog.size(); i++){
@@ -38,6 +41,16 @@ public abstract class NPC extends Entety {
 
     public void resetNPC(){
         this.setDefaultMsg(false);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("=== NPC Details ===\n")
+                .append("Name: ").append(this.getName() != null ? this.getName() : "Unknown").append("\n")
+                .append("Description: ").append(this.getDescription() != null ? this.getDescription() : "None").append("\n")
+                .append("Location: ").append(this.location != null ? this.location.getName() : "Unknown").append("\n");
+        return sb.toString();
     }
 
     //Getter-Setter
@@ -65,4 +78,20 @@ public abstract class NPC extends Entety {
         this.defaultMsg = defaultMsg;
     }
 
+    public String getDefaultText() {
+        return defaultText;
+    }
+
+    public void setDefaultText(String defaultText) {
+        this.defaultText = defaultText;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        NPC other = (NPC) obj;
+        return Objects.equals(this.getName(), other.getName()) &&
+                Objects.equals(this.getDescription(), other.getDescription());
+    }
 }

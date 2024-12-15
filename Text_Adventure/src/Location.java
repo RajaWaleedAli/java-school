@@ -1,16 +1,36 @@
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Location extends Entety{
-    Container items;
-    ArrayList<Exit> exits;
-    Location lastLocation;
-    ArrayList<NPC> NPCs;
+    private Container items;
+    private ArrayList<Exit> exits;
+    private Location lastLocation;
+    private ArrayList<NPC> NPCs;
+    private ArrayList<Container> containers;
     public Location(String name, String description, Location lastLocation) {
         super(name, description);
         this.lastLocation = lastLocation;
         this.exits = new ArrayList<>();
         this.items = new Container(null,null,this);
         this.NPCs = new ArrayList<>();
+        this.containers = new ArrayList<>();
+    }
+
+    public void addContainer(Container container){
+        containers.add(container);
+    }
+
+    public void removeContainer(Container container){
+        containers.remove(container);
+    }
+
+    public Container searchContainer(Container container){
+        for(Container c:containers){
+            if(c.equals(container)){
+                return c;
+            }
+        }
+        return null;
     }
 
     public void addExit(Exit exit) {
@@ -23,10 +43,12 @@ public class Location extends Entety{
 
     public void addNPC(NPC npc){
         NPCs.add(npc);
+        npc.setLocation(this);
     }
 
     public void removeNPC(NPC npc){
         NPCs.remove(npc);
+        npc.setLocation(null);
     }
 
     public void addItems(Thing items){
@@ -44,10 +66,20 @@ public class Location extends Entety{
                 .append("Name: ").append(this.getName() != null ? this.getName() : "Unknown").append("\n")
                 .append("Description: ").append(this.getDescription() != null ? this.getDescription() : "None").append("\n")
                 .append("Items: ").append(this.items != null && !this.items.getThings().isEmpty() ? this.items.getThings() : "No items here").append("\n")
+                .append("Containers: \n").append(!this.containers.isEmpty() ? this.containers : "No Containers here").append("\n")
                 .append("Exits: \n").append(this.exits != null ? this.exits : "No exits available").append("\n")
                 .append("NPCs: \n").append(!this.NPCs.isEmpty() ? this.NPCs : "No NPCs here").append("\n")
                 .append("Last Location: ").append(this.lastLocation != null && this.lastLocation.getName() != null ? this.lastLocation.getName() : "Unknown").append("\n");
         return sb.toString();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Location other = (Location) obj;
+        return Objects.equals(this.getName(), other.getName()) &&
+                Objects.equals(this.getDescription(), other.getDescription());
     }
 
 

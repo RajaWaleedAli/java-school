@@ -1,3 +1,6 @@
+import jdk.internal.icu.impl.NormalizerImpl;
+import java.util.Objects;
+
 public class Thing extends Entety {
     private Location location;
 
@@ -16,6 +19,20 @@ public class Thing extends Entety {
         return sb.toString();
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Thing other = (Thing) obj;
+
+        return Objects.equals(this.getName(), other.getName()) &&
+                Objects.equals(this.getDescription(), other.getDescription()) &&
+                Objects.equals(this.location, other.location);
+    }
 
 
     //Getter-Setter

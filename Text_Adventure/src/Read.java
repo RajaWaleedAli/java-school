@@ -16,7 +16,7 @@ public class Read {
     }
 
     public static int askMode(Player player){
-        System.out.println("Was willst du tun?!");
+        System.out.println("\nWas willst du tun?!");
         int index=0;
         do{
             System.out.println("[1] Print Player Information");
@@ -24,10 +24,15 @@ public class Read {
             System.out.println("[3] Print Inventory");
             System.out.println("[4] Select Exit");
             System.out.println("[5] Talk to NPC");
-            System.out.println("[6] Load Data");
-            System.out.println("[7] Save");
+            System.out.println("[6] Drop Item");
+            System.out.println("[7] Pick up Item");
+            System.out.println("[8] Load Data");
+            System.out.println("[9] Save");
             System.out.println("[-1] Quit Game");
             index=parseWithDefault(Read.read(), 0);
+            if(index<-1||index>9){
+                index=0;
+            }
         }while(index==0);
         switch (index){
             case 1:
@@ -45,7 +50,10 @@ public class Read {
                     break;
                 }else{
                     System.out.println(tempE.getDestination().getDescription());
-                    player.setCurrentLocation(tempE.getDestination());
+                    player.move(tempE.getName());
+                    for(NPC n:tempE.getDestination().getNPCs()){
+                        n.setDefaultMsg(false);
+                    }
                 }
                 break;
             case 5:
@@ -57,8 +65,28 @@ public class Read {
                 }
                 break;
             case 6:
+                Thing thingToRem = Read.readThing(player.getInventory());
+                if(thingToRem==null){
+                    break;
+                }else {
+                    player.removeItem(thingToRem,player.getCurrentLocation().getItems());
+                }
                 break;
             case 7:
+                Thing thingToAdd = Read.readThing(player.getCurrentLocation().getItems());
+                if(thingToAdd==null){
+                    break;
+                }else{
+                    player.addItem(thingToAdd);
+                }
+                break;
+            case 8:
+                break;
+            case 9:
+                boolean value = Save.saveGame(player);
+                if(!value){
+                    return -2;
+                }
                 break;
             case -1:
                 sc.close();
@@ -93,7 +121,7 @@ public class Read {
     }
 
     public static Thing readThing(Container container){
-        if(container==null){
+        if(container==null||container.getThings().isEmpty()){
             System.out.println("Keine Items Verfuegbar!");
             return null;
         }

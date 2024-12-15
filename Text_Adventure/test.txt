@@ -1,0 +1,9 @@
+Player Name: Reisender
+Player Description: Ein Reisender ohne Erinnerung.
+Current Location: Turm der Asche
+Inventory: Inventory
+Items: 
+Geisterlaterne - Eine Laterne, die das Unsichtbare sichtbar macht.
+Schlüssel der Toten - Ein uralter Schlüssel, der Geheimnisse birgt.
+Mondstein-Fragment - Ein blau schimmerndes Fragment des Mondsteins.
+Mondstein-Fragment - Das letzte Fragment des Mondsteins.

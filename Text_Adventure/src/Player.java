@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Player extends Entety {
     private Location currentLocation;
@@ -24,11 +25,10 @@ public class Player extends Entety {
     public void move(String exitName) {
         // Überprüfen, ob die aktuelle Location existiert
         if (currentLocation != null) {
-            ArrayList<Exit> exits = currentLocation.getExits();
             Exit chosenExit = null;
 
             // Suchen nach dem passenden Ausgang
-            for (Exit exit : exits) {
+            for (Exit exit : currentLocation.getExits()) {
                 if (exit.getName().equalsIgnoreCase(exitName)) {
                     chosenExit = exit;
                     break;
@@ -38,6 +38,7 @@ public class Player extends Entety {
             if (chosenExit != null) {
                 // Spieler zur neuen Location bewegen
                 Location newLocation = chosenExit.getDestination();
+                newLocation.setLastLocation(getCurrentLocation());
                 setCurrentLocation(newLocation);
                 System.out.println(chosenExit.toString());
             } else {
@@ -54,11 +55,18 @@ public class Player extends Entety {
         sb.append("=== Player ===\n")
                 .append("Name: ").append(this.getName() != null ? this.getName() : "Unnamed").append("\n")
                 .append("Current Location: ").append(this.currentLocation != null && this.currentLocation.getName() != null ? this.currentLocation.getName() : "Unknown").append("\n")
-                .append("Inventory: ").append(this.inventory != null && this.inventory.getName() != null ? this.inventory.getName() : "No container").append("\n")
-                .append("Items:\n").append(this.inventory != null && this.inventory.getThings() != null ? this.inventory.getThings() : "Empty").append("\n");
+                .append("Inventory:\n").append(this.inventory != null && !this.inventory.getThings().isEmpty() ? this.inventory.getThings() : "Empty").append("\n");
         return sb.toString();
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Player other = (Player) obj;
+        return Objects.equals(this.getName(), other.getName()) &&
+                Objects.equals(this.getDescription(), other.getDescription());
+    }
 
     // Getter-Setter
     public String getName() {
