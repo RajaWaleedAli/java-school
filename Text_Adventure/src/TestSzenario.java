@@ -1,13 +1,14 @@
+/*
+    Autor: ChatGPT
+    Klasse: 4BT
+    Fach: Informatik
+    Datum: 15.12.2024
+    Beschreibung: Testszenario, kein Userinput und unübersichtliche ausgabe.
+*/
+
 import java.util.Scanner;
 
 public class TestSzenario {
-    private String read(){
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Bitte geben Sie einen Text ein:");
-        String text = sc.nextLine();
-        sc.close();
-        return text;
-    }
     public static void main(String[] args) {
         // Location und Ausgänge erstellen
         Location dach = new Location("Dach", "Dies ist das Dach der kleinen Hütte.", null);
@@ -55,9 +56,6 @@ public class TestSzenario {
         // Spieler klettert aufs Dach
         spieler.move("hoch");
         printState(spieler);
-
-        System.out.println(schrank.toString());
-        System.out.println(wiese.toString());
         System.out.println("Simulation beendet!");
     }
 

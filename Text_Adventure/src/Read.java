@@ -1,3 +1,11 @@
+/*
+    Autor: Raja Waleed Ali
+    Klasse: 4BT
+    Fach: Informatik
+    Datum: 15.12.2024
+    Beschreibung: Userinput.
+*/
+
 import java.util.Objects;
 import java.util.Scanner;
 

@@ -1,3 +1,12 @@
+/*
+    Autor: Raja Waleed Ali
+    Klasse: 4BT
+    Fach: Informatik
+    Datum: 15.12.2024
+    Beschreibung: Spielstand laden.
+    Fehler: Beim laden des Spielstands werden die Gegenstände dupliziert
+*/
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;

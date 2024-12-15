@@ -1,3 +1,12 @@
+/*
+    Autor: Raja Waleed Ali
+    Text (zb Beschreibungen) von ChatGPT generiert
+    Klasse: 4BT
+    Fach: Informatik
+    Datum: 15.12.2024
+    Beschreibung: Hauptklasse.
+*/
+
 import java.util.ArrayList;
 
 public class Game {
@@ -272,13 +281,6 @@ public class Game {
                                     if(temp.getName().equals(spieler.getCurrentLocation().getName())){
                                         spieler.setCurrentLocation(temp);
                                     }
-                                    for(Thing t:spieler.getInventory().getThings()){
-                                        int sizeInv=spieler.getInventory().getThings().size();
-                                        spieler.getCurrentLocation().getItems().searchThing(t,spieler.getInventory());
-                                        if(sizeInv!=spieler.getInventory().getThings().size()){
-                                            spieler.getInventory().removeThing(t,null);
-                                        }
-                                    }
                                 }
                             }else if(modeEnd==2){
                                 System.out.println("Spiel wird Beendet!");
@@ -302,13 +304,6 @@ public class Game {
                 for(Location temp:locations){
                     if(temp.getName().equals(spieler.getCurrentLocation().getName())){
                         spieler.setCurrentLocation(temp);
-                    }
-                    for(Thing t:spieler.getInventory().getThings()){
-                        int sizeInv=spieler.getInventory().getThings().size();
-                        spieler.getCurrentLocation().getItems().searchThing(t,spieler.getInventory());
-                        if(sizeInv!=spieler.getInventory().getThings().size()){
-                            spieler.getInventory().removeThing(t,null);
-                        }
                     }
                 }
             }

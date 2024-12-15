@@ -1,3 +1,12 @@
+/*
+    Autor: Raja Waleed Ali
+    Klasse: 4BT
+    Fach: Informatik
+    Datum: 15.12.2024
+    Beschreibung: Speichert den aktuellen Spielstand
+                  (Daten die in Spieler Gespeeichert wurden, werden hier aufgerufen)
+*/
+
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.io.IOException;

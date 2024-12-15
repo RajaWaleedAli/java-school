@@ -1,3 +1,11 @@
+/*
+    Autor: Raja Waleed Ali
+    Klasse: 4BT
+    Fach: Informatik
+    Datum: 15.12.2024
+    Beschreibung: Ding im AA.
+*/
+
 import jdk.internal.icu.impl.NormalizerImpl;
 import java.util.Objects;
 
@@ -30,8 +38,7 @@ public class Thing extends Entety {
         Thing other = (Thing) obj;
 
         return Objects.equals(this.getName(), other.getName()) &&
-                Objects.equals(this.getDescription(), other.getDescription()) &&
-                Objects.equals(this.location, other.location);
+                Objects.equals(this.getDescription(), other.getDescription());
     }
 
 

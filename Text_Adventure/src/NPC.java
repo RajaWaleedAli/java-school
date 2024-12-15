@@ -1,3 +1,11 @@
+/*
+    Autor: Raja Waleed Ali
+    Klasse: 4BT
+    Fach: Informatik
+    Datum: 15.12.2024
+    Beschreibung: Non Player Characters die etwas mit der story zu tun haben
+*/
+
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;

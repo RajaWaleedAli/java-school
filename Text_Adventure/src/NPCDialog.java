@@ -1,3 +1,11 @@
+/*
+    Autor: ChatGPT
+    Klasse: 4BT
+    Fach: Informatik
+    Datum: 15.12.2024
+    Beschreibung: Vorgefertigter text für NPC_filler
+*/
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
