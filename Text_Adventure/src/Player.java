@@ -11,7 +11,7 @@ import java.util.Objects;
 
 public class Player extends Entety {
     private Location currentLocation;
-    private Container inventory; // Container als Inventar
+    private Container inventory;
     private Location inventoryLocation = new Location("Inventory", "Für Items, welche sich im Inventar befinden!", null);
 
     public Player(String name, String description) {
@@ -21,21 +21,19 @@ public class Player extends Entety {
     }
 
     public void addItem(Thing item) {
-        this.inventory.addThing(item); // Hinzufügen von Gegenständen in den Container
+        this.inventory.addThing(item);
         item.setLocation(inventoryLocation);
     }
 
     public void removeItem(Thing item, Container container) {
-        this.inventory.removeThing(item,container); // Entfernen aus dem Container
+        this.inventory.removeThing(item,container);
         item.setLocation(container.getLocation());
     }
 
     public void move(String exitName) {
-        // Überprüfen, ob die aktuelle Location existiert
         if (currentLocation != null) {
             Exit chosenExit = null;
 
-            // Suchen nach dem passenden Ausgang
             for (Exit exit : currentLocation.getExits()) {
                 if (exit.getName().equalsIgnoreCase(exitName)) {
                     chosenExit = exit;
@@ -44,7 +42,6 @@ public class Player extends Entety {
             }
 
             if (chosenExit != null) {
-                // Spieler zur neuen Location bewegen
                 Location newLocation = chosenExit.getDestination();
                 newLocation.setLastLocation(getCurrentLocation());
                 setCurrentLocation(newLocation);

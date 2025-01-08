@@ -30,20 +30,17 @@ public class Save {
     }
 
     public static boolean saveGame(Player player) {
+        //pw.println() schreibt in die datei hinein
         try {
-            // Spielername und Beschreibung speichern
             pw.println("Player Name: " + player.getName());
             pw.println("Player Description: " + player.getDescription());
 
-            // Aktuelle Position speichern
             Location currentLocation = player.getCurrentLocation();
             pw.println("Current Location: " + (currentLocation != null ? currentLocation.getName() : "null"));
 
-            // Inventar speichern
             Container inventory = player.getInventory();
             pw.println("Inventory: " + inventory.getName());
 
-            // Gegenstände im Inventar speichern
             ArrayList<Thing> items = inventory.getThings();
             pw.println("Items: " + (items.isEmpty() ? "none" : ""));
             for (Thing item : items) {
