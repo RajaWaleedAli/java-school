@@ -12,7 +12,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 class LoadGame {
-    private static String path = "C:\\Users\\39339\\IdeaProjects\\java\\Text_Adventure\\test.txt";
+    private static String path = "test.txt";
 
     public static Player loadGame() {
         try (BufferedReader br = new BufferedReader(new FileReader(path))) {

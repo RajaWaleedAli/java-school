@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class Save {
-    private static String path="C:\\Users\\39339\\IdeaProjects\\java\\Text_Adventure\\test.txt";
+    private static String path="test.txt";
     private static final FileWriter fw;
 
     static {
