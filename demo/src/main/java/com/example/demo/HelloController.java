@@ -43,6 +43,7 @@ public class HelloController {
             selectedValue = choiceBox1.getValue();
             label.setText("" + w.umrechner(selectedValue));
         }catch (NumberFormatException e){
+            label.setText("Falsches Format");
             System.err.println("NumberFormatException");
         }catch (Exception e){
             System.err.println(e.getMessage());

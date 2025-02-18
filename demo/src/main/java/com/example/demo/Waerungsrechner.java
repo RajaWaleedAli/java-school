@@ -1,18 +1,18 @@
 package com.example.demo;
 
-import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-
-import java.awt.event.ActionEvent;
+import java.text.DecimalFormat;
 import java.util.HashMap;
 
 public class Waerungsrechner {
     private HashMap<String,Double> hashMap=new HashMap<>();
     private static boolean banane=false;
     private static Waerungsrechner w;
-    private double waerung1;
+    private double value;
+    private DecimalFormat df;
 
     private Waerungsrechner(){
+        df=new DecimalFormat("#.##");
+
         hashMap.put("Euro", 1.0);
         hashMap.put("US Dollar", 1.048);
         hashMap.put("British Pound", 0.83);
@@ -35,11 +35,11 @@ public class Waerungsrechner {
         }
     }
     public void saveEur(String key,double value){
-        this.waerung1=value/hashMap.get(key);
+        this.value=value/hashMap.get(key);
     }
 
-    public double umrechner(String s1){
-        return this.waerung1* hashMap.get(s1);
+    public String umrechner(String s1){
+        return df.format(this.value* hashMap.get(s1))+ " " + s1;
     }
 
 }
