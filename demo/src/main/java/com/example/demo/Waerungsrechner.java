@@ -41,5 +41,4 @@ public class Waerungsrechner {
     public String umrechner(String s1){
         return df.format(this.value* hashMap.get(s1))+ " " + s1;
     }
-
 }
