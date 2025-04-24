@@ -29,6 +29,13 @@ public class PrintServer {
         if(opIndex==-1){
             System.out.println("No operator found");
         }
+        String rechnung = message.replaceAll("\\s+", "");
+        String regex = "[+--/*]";
+        String[] myArray = rechnung.split(regex);
+        int value1=Integer.parseInt(myArray[0]);
+        int value2=Integer.parseInt(myArray[1]);
+        int result=value1+value2;
+        System.out.println(message+" = "+result);
         serverSocket.close();
         clientSocket.close();
     }

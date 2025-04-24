@@ -16,8 +16,7 @@ public class PrintClient {
         date=LocalDateTime.now();
         out.println(message+" "+date+"\n");
 
-        BufferedReader inFromClient= new BufferedReader(new
-                InputStreamReader(s.getInputStream()));
+        BufferedReader inFromClient= new BufferedReader(new InputStreamReader(s.getInputStream()));
         message = inFromClient.readLine();
 
         System.out.println(message);

@@ -12,22 +12,16 @@ public class Zeitplaner {
     }
 
     public boolean istTerminBelegt(String time, int i) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-        LocalTime uhrzeit = LocalTime.parse(time, formatter);
+        Termin _termin = new Termin(time,i);
+        if(termine.isEmpty()) {
+            return false;
+        }
         for (Termin termin : termine) {
-            LocalTime uhrzeit1 = LocalTime.parse(termin.getTime(), formatter);
-            if (uhrzeit1.equals(uhrzeit)) {
-                return false;
-            }else if(uhrzeit.isBefore(uhrzeit1)){
-                if(uhrzeit.plusMinutes(i).isAfter(uhrzeit1)){
-                    return false;
-                }
-            }else if(uhrzeit1.isBefore(uhrzeit)){
-                if(uhrzeit1.plusMinutes(termin.getDauer()).isAfter(uhrzeit)){
-                    return false;
-                }
+            if(termin.ueberschneidetSichMit(_termin)){
+                return true;
             }
         }
+        return false;
     }
 
     public void terminLoeschen(String time) {
