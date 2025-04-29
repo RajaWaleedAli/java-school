@@ -1,15 +1,13 @@
 package Uebung6;
 
 import java.io.*;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.net.SocketTimeoutException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.net.*;
+import java.util.*;
 
 public class PrintServer {
     private static List<Socket> clientSockets = new ArrayList<>();
+    private static HashMap<String,Socket> nameToSocket = new HashMap<String,Socket>();
+    private static HashMap<Socket,String> socketToName = new HashMap<Socket,String>();
 
     public static void main(String[] args) throws IOException {
         ServerSocket serverSocket = new ServerSocket(12345);
@@ -21,7 +19,13 @@ public class PrintServer {
                 try {
                     Socket clientSocket = serverSocket.accept();
                     clientSockets.add(clientSocket);
-                    System.out.println("Neuer Client verbunden: " + clientSocket);
+                    BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+                    String response;
+                    while(!in.ready());
+                    response = in.readLine();
+                    nameToSocket.put(response,clientSocket);
+                    socketToName.put(clientSocket,response);
+                    System.out.println("Neuer Client verbunden: " + response);
                 } catch (SocketTimeoutException e) {
                     // kein neuer Client -> ignorieren
                 }
@@ -57,11 +61,28 @@ public class PrintServer {
         }
     }
     private static void broadcastMessage(Socket sender, String message) {
+        if(message.startsWith("@")){
+            String s2 = message.substring(1); // "Simon geht es dir gut"
+            int spaceIndex = s2.indexOf(' ');
+
+            String name="";
+            if (spaceIndex != -1) {
+                name = s2.substring(0, spaceIndex);
+            }
+            try{
+                Socket s=nameToSocket.get(name);
+                PrintWriter out = new PrintWriter(s.getOutputStream(), true);
+                out.println("Broadcast von " + socketToName.get(s) + ": " + message);
+                return;
+            }catch (Exception e){
+                System.err.println("Client "+name+" gibt es nicht");
+            }
+        }
         for (Socket socket : clientSockets) {
             if (!socket.equals(sender)) {
                 try {
                     PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-                    out.println("Broadcast von " + sender.getRemoteSocketAddress() + ": " + message);
+                    out.println(socketToName.get(sender) + ": " + message);
                 } catch (IOException e) {
                     System.out.println("Fehler beim Senden an " + socket);
                 }

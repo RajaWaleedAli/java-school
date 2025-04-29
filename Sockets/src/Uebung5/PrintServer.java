@@ -6,7 +6,6 @@ import java.util.*;
 
 public class PrintServer {
     private static List<Socket> clientSockets = new ArrayList<>();
-    private static HashMap<String,Socket> nameToSocket = new HashMap<String,Socket>();
     private static HashMap<Socket,String> socketToName = new HashMap<Socket,String>();
 
     public static void main(String[] args) throws IOException {
@@ -23,7 +22,6 @@ public class PrintServer {
                     String response;
                     while(!in.ready());
                     response = in.readLine();
-                    nameToSocket.put(response,clientSocket);
                     socketToName.put(clientSocket,response);
                     System.out.println("Neuer Client verbunden: " + response);
                 } catch (SocketTimeoutException e) {
@@ -39,7 +37,7 @@ public class PrintServer {
                         BufferedReader in = new BufferedReader(new InputStreamReader(inputStream));
                         String message = in.readLine();
                         if (message != null) {
-                            System.out.println("Empfangen von " + socket.getRemoteSocketAddress() + ": " + message);
+                            System.out.println("Empfangen von " + socketToName.get(socket) + ": " + message);
                             broadcastMessage(socket, message);
                         } else {
                             // Client hat Verbindung getrennt
@@ -61,23 +59,6 @@ public class PrintServer {
         }
     }
     private static void broadcastMessage(Socket sender, String message) {
-        if(message.startsWith("@")){
-            String s2 = message.substring(1); // "Simon geht es dir gut"
-            int spaceIndex = s2.indexOf(' ');
-
-            String name="";
-            if (spaceIndex != -1) {
-                name = s2.substring(0, spaceIndex);
-            }
-            try{
-                Socket s=nameToSocket.get(name);
-                PrintWriter out = new PrintWriter(s.getOutputStream(), true);
-                out.println("Broadcast von " + socketToName.get(s) + ": " + message);
-                return;
-            }catch (Exception e){
-                System.err.println("Client "+name+" gibt es nicht");
-            }
-        }
         for (Socket socket : clientSockets) {
             if (!socket.equals(sender)) {
                 try {

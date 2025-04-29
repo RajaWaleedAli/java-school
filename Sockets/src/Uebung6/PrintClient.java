@@ -16,9 +16,10 @@ public class PrintClient extends Thread {
     }
 
     public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
         for (int i = 0; i < 3; i++) {
-            Scanner scanner = new Scanner(System.in);
-            System.out.println("Enter a name:");
+            System.out.print("Enter a name: ");
+            System.out.flush();
             String s = scanner.nextLine();
             new PrintClient(s).start();
         }
@@ -31,8 +32,8 @@ public class PrintClient extends Thread {
                 PrintWriter out = new PrintWriter(socket.getOutputStream(), true)
         ) {
             AtomicReference<String> userInput = new AtomicReference<>("");
-            //System.out.println("Client " + index + " verbunden.");
-            out.println("Hallo von " + index);
+            System.out.println("Client " + index + " verbunden.");
+            out.println(index);
             new Thread(() -> {
                 Scanner scanner = new Scanner(System.in);
                 while (true) {
@@ -58,7 +59,7 @@ public class PrintClient extends Thread {
                 }
             }
         } catch (IOException e) {
-            System.out.println("Client " + index + " Verbindung verloren.");
+            System.out.println(index + " Verbindung verloren.");
         }
     }
 }
