@@ -23,9 +23,9 @@ public class BinaryTree<T extends Comparable<T>> {
     }
 
     // Rekursive Einfügefunktion
-    private TreeNode<T> insertRec(TreeNode root, T key) {
+    private TreeNode<T> insertRec(TreeNode<T> root, T key) {
         if (root == null) {
-            root = new TreeNode(key);
+            root = new TreeNode<T>(key);
             return root;
         }
 
