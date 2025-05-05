@@ -4,14 +4,46 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
-public class PrintServer {
+
+public class PrintServer extends Thread {
     private static List<Socket> clientSockets = new ArrayList<>();
     private static HashMap<String,Socket> nameToSocket = new HashMap<String,Socket>();
     private static HashMap<Socket,String> socketToName = new HashMap<Socket,String>();
 
     public static void main(String[] args) throws IOException {
-        ServerSocket serverSocket = new ServerSocket(12345);
-        System.out.println("Server gestartet auf Port 12345");
+        ServerSocket serverSocket = new ServerSocket(20014);
+        System.out.println("Server gestartet auf Port 20014");
+        new Thread(()->{
+                try (
+                        Socket socket = new Socket("localhost", 20000);
+                        BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                        PrintWriter out = new PrintWriter(socket.getOutputStream(), true)
+                ) {
+                    out.println("Server gestartet auf Port 20014\n");
+                    if(in.ready()){
+                        if ((in.readLine()) != null) {
+                            System.out.println(in.readLine());
+                        }
+                    }
+                }catch (Exception e) {
+                    e.printStackTrace();
+                }
+                new Thread(()->{
+                    while(true) {
+                        try (
+                                Socket socket = new Socket("localhost", 20000);
+                                BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                        ) {
+                            if (in.ready()) {
+                                if ((in.readLine()) != null) {
+                                    System.out.println(in.readLine());
+                                }
+                            }
+                            Thread.sleep(100);
+                        } catch (Exception e) {}
+                    }
+                }).start();
+        }).start();
 
         while (true) {
             if (serverSocket.isBound() && !serverSocket.isClosed()) {
@@ -19,16 +51,8 @@ public class PrintServer {
                 try {
                     Socket clientSocket = serverSocket.accept();
                     clientSockets.add(clientSocket);
-                    BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-                    String response;
-                    while(!in.ready());
-                    response = in.readLine();
-                    nameToSocket.put(response,clientSocket);
-                    socketToName.put(clientSocket,response);
-                    System.out.println("Neuer Client verbunden: " + response);
-                } catch (SocketTimeoutException e) {
-                    // kein neuer Client -> ignorieren
-                }
+                    System.out.println("Neuer Client verbunden: " + clientSocket);
+                } catch (SocketTimeoutException e) {}
             }
             Iterator<Socket> iterator = clientSockets.iterator();
             while (iterator.hasNext()) {
@@ -61,30 +85,68 @@ public class PrintServer {
         }
     }
     private static void broadcastMessage(Socket sender, String message) {
-        if(message.startsWith("@")){
-            String s2 = message.substring(1); // "Simon geht es dir gut"
-            int spaceIndex = s2.indexOf(' ');
+        int semicolonIndex = -1;
+        if (message.startsWith("@")) {
+            String s2 = message.substring(1);
+            semicolonIndex = s2.indexOf(';');
 
-            String name="";
-            if (spaceIndex != -1) {
-                name = s2.substring(0, spaceIndex);
+            String name = "";
+            if (semicolonIndex != -1) {
+                name = s2.substring(0, semicolonIndex);
             }
-            try{
-                Socket s=nameToSocket.get(name);
+            try {
+                Socket s = nameToSocket.get(name);
                 PrintWriter out = new PrintWriter(s.getOutputStream(), true);
-                out.println("Broadcast von " + socketToName.get(s) + ": " + message);
-                return;
-            }catch (Exception e){
-                System.err.println("Client "+name+" gibt es nicht");
-            }
-        }
-        for (Socket socket : clientSockets) {
-            if (!socket.equals(sender)) {
+                out.println("Broadcast von " + socketToName.get(s) + ": " + message+"\n");
+            } catch (Exception e) {
                 try {
-                    PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-                    out.println(socketToName.get(sender) + ": " + message);
-                } catch (IOException e) {
-                    System.out.println("Fehler beim Senden an " + socket);
+                    PrintWriter out = new PrintWriter(sender.getOutputStream(), true);
+                    out.println("Client " + name + " gibt es nicht\n");
+                } catch (Exception ee) {}
+            }
+        }else if(message.equalsIgnoreCase("close;")){
+            try {
+                sender.close();
+                nameToSocket.remove(socketToName.get(sender));
+                socketToName.remove(sender);
+            }catch (Exception e){}
+        }else if(message.startsWith("NEWUSER")) {
+            semicolonIndex = message.indexOf(';');
+            if(socketToName.containsKey(sender)){
+                try {
+                    PrintWriter out = new PrintWriter(sender.getOutputStream(), true);
+                    out.println("Sie besitzen bereits einen UserName. Ihr username lautet: "
+                            + socketToName.get(sender)+"\n");
+                } catch (Exception ee) {}
+            }
+            String name = "";
+            if (semicolonIndex != -1) {
+                name = message.substring(0, semicolonIndex);
+                socketToName.put(sender,name);
+                nameToSocket.put(name,sender);
+            }else {
+                try {
+                    PrintWriter out = new PrintWriter(sender.getOutputStream(), true);
+                    out.println("Fehler aufgetreten!\n");
+                } catch (Exception ee) {}
+            }
+        }else if(message.startsWith("BC")) {
+            semicolonIndex = message.indexOf(';');
+
+            String msg="";
+            if (semicolonIndex != -1) {
+                msg = message.substring(0, semicolonIndex);
+            }
+            for (Socket socket : clientSockets) {
+                if(socketToName.containsKey(socket)){
+                    if (!socket.equals(sender)) {
+                        try {
+                            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+                            out.println(socketToName.get(sender) + ": " + msg+"\n");
+                        } catch (IOException e) {
+                            System.out.println("Fehler beim Senden an " + socketToName.get(socket));
+                        }
+                    }
                 }
             }
         }

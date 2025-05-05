@@ -9,31 +9,26 @@ import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class PrintClient extends Thread {
-    private String index;
+    private int index;
 
-    public PrintClient(String index) {
+    public PrintClient(int index) {
         this.index = index;
     }
-
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        for (int i = 0; i < 3; i++) {
-            System.out.print("Enter a name: ");
-            System.out.flush();
-            String s = scanner.nextLine();
-            new PrintClient(s).start();
-        }
+        System.out.print("Enter a Port: ");
+        System.out.flush();
+        String s = scanner.nextLine();
+        new PrintClient(Integer.parseInt(s)).start();
     }
 
     public void run() {
         try (
-                Socket socket = new Socket("localhost", 12345);
+                Socket socket = new Socket("localhost", index);
                 BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 PrintWriter out = new PrintWriter(socket.getOutputStream(), true)
         ) {
             AtomicReference<String> userInput = new AtomicReference<>("");
-            System.out.println("Client " + index + " verbunden.");
-            out.println(index);
             new Thread(() -> {
                 Scanner scanner = new Scanner(System.in);
                 while (true) {
@@ -49,17 +44,17 @@ public class PrintClient extends Thread {
             while(true){
                 String response;
                 if (!userInput.get().isEmpty()) {
-                    out.println(userInput.get());
+                    out.println(userInput.get()+"\n");
                     userInput.set(""); // Reset nach Senden
                 }
                 if(in.ready()){
                     if ((response = in.readLine()) != null) {
-                        System.out.println("Client " + index + " empfängt: " + response);
+                        System.out.println(response);
                     }
                 }
             }
         } catch (IOException e) {
-            System.out.println(index + " Verbindung verloren.");
+            System.out.println("Verbindung verloren.");
         }
     }
 }
