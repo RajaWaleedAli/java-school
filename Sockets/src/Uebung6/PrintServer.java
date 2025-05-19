@@ -13,38 +13,29 @@ public class PrintServer extends Thread {
     public static void main(String[] args) throws IOException {
         ServerSocket serverSocket = new ServerSocket(20014);
         System.out.println("Server gestartet auf Port 20014");
+        
         new Thread(()->{
-                try (
-                        Socket socket = new Socket("localhost", 20000);
-                        BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                        PrintWriter out = new PrintWriter(socket.getOutputStream(), true)
-                ) {
-                    out.println("Server gestartet auf Port 20014\n");
-                    if(in.ready()){
-                        if ((in.readLine()) != null) {
-                            System.out.println(in.readLine());
-                        }
-                    }
-                }catch (Exception e) {
-                    e.printStackTrace();
-                }
-                new Thread(()->{
-                    while(true) {
-                        try (
-                                Socket socket = new Socket("localhost", 20000);
-                                BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                        ) {
-                            if (in.ready()) {
-                                if ((in.readLine()) != null) {
-                                    System.out.println(in.readLine());
-                                }
-                            }
-                            Thread.sleep(100);
-                        } catch (Exception e) {}
-                    }
-                }).start();
+            serverList();
         }).start();
 
+        new Thread(() -> {
+            while (true) {
+                try {
+                    String helpMessage = "Verfügbare Commands:\n" +
+                            "  NEWUSER;name          → Username setzen\n" +
+                            "  BC;nachricht          → Nachricht an alle senden\n" +
+                            "  @name;nachricht       → Nachricht an einen bestimmten User\n" +
+                            "  close;                → Verbindung beenden";
+
+                    broadcastSystemMessage(helpMessage);
+
+                    Thread.sleep(15000); // 10 Sekunden
+                } catch (InterruptedException e) {
+                    break;
+                }
+            }
+        }).start();
+        
         while (true) {
             if (serverSocket.isBound() && !serverSocket.isClosed()) {
                 serverSocket.setSoTimeout(100);
@@ -84,11 +75,42 @@ public class PrintServer extends Thread {
             }
         }
     }
+    private static void serverList(){
+        try (
+                Socket socket = new Socket("localhost", 20000);
+                BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                PrintWriter out = new PrintWriter(socket.getOutputStream(), true)
+        ) {
+            out.println("Server gestartet auf Port 20014\n");
+            if(in.ready()){
+                if ((in.readLine()) != null) {
+                    System.out.println(in.readLine());
+                }
+            }
+        }catch (Exception e) {}
+        new Thread(()->{
+            while(true) {
+                try (
+                        Socket socket = new Socket("localhost", 20000);
+                        BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                ) {
+                    if (in.ready()) {
+                        if ((in.readLine()) != null) {
+                            System.out.println(in.readLine());
+                        }
+                    }
+                    Thread.sleep(100);
+                } catch (Exception e) {}
+            }
+        }).start();
+    }
+
     private static void broadcastMessage(Socket sender, String message) {
         int semicolonIndex = -1;
         if (message.startsWith("@")) {
             String s2 = message.substring(1);
             semicolonIndex = s2.indexOf(';');
+            String actualMsg = s2.substring(semicolonIndex + 1);
 
             String name = "";
             if (semicolonIndex != -1) {
@@ -97,7 +119,7 @@ public class PrintServer extends Thread {
             try {
                 Socket s = nameToSocket.get(name);
                 PrintWriter out = new PrintWriter(s.getOutputStream(), true);
-                out.println("Broadcast von " + socketToName.get(s) + ": " + message+"\n");
+                out.println(socketToName.get(sender) + " (privat): " + actualMsg);;
             } catch (Exception e) {
                 try {
                     PrintWriter out = new PrintWriter(sender.getOutputStream(), true);
@@ -118,12 +140,15 @@ public class PrintServer extends Thread {
                     out.println("Sie besitzen bereits einen UserName. Ihr username lautet: "
                             + socketToName.get(sender)+"\n");
                 } catch (Exception ee) {}
+                return;
             }
             String name = "";
             if (semicolonIndex != -1) {
-                name = message.substring(0, semicolonIndex);
+                name = message.substring(semicolonIndex + 1);
                 socketToName.put(sender,name);
                 nameToSocket.put(name,sender);
+                System.out.println(name+" ist dem Chat beigetreten");
+                broadcastSystemMessage(name+" ist dem Chat beigetreten");
             }else {
                 try {
                     PrintWriter out = new PrintWriter(sender.getOutputStream(), true);
@@ -135,7 +160,7 @@ public class PrintServer extends Thread {
 
             String msg="";
             if (semicolonIndex != -1) {
-                msg = message.substring(0, semicolonIndex);
+                msg = message.substring(semicolonIndex + 1);
             }
             for (Socket socket : clientSockets) {
                 if(socketToName.containsKey(socket)){
@@ -151,4 +176,16 @@ public class PrintServer extends Thread {
             }
         }
     }
+
+    private static void broadcastSystemMessage(String message) {
+        for (Socket socket : clientSockets) {
+            try {
+                PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+                out.println("[System] " + message + "\n");
+            } catch (IOException e) {
+                System.out.println("Fehler beim Senden an " + socket);
+            }
+        }
+    }
+
 }

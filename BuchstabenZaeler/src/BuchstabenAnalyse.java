@@ -14,7 +14,7 @@ public class BuchstabenAnalyse {
         for (char buchstabe : eingabe.toCharArray()) {
             if (Character.isLetter(buchstabe)) {
                 if (haeufigkeit.containsKey(buchstabe)) {
-                    haeufigkeit.put(buchstabe, haeufigkeit.get(buchstabe) + 1);
+                     haeufigkeit.put(buchstabe, haeufigkeit.get(buchstabe) + 1);
                 } else {
                     haeufigkeit.put(buchstabe, 1);
                 }

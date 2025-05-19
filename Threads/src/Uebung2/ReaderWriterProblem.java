@@ -20,23 +20,20 @@ public class ReaderWriterProblem {
         @Override
         public void run() {
             try {
-                // Eintrittsbereich für Leser
                 mutex.acquire();
                 readCount++;
                 if (readCount == 1) {
-                    writeLock.acquire(); // Erster Leser blockiert Schreiber
+                    writeLock.acquire();
                 }
                 mutex.release();
 
-                // Lesebereich
                 System.out.println("Reader " + readerId + " liest: " + sharedData);
                 Thread.sleep(1000);
 
-                // Austrittsbereich für Leser
                 mutex.acquire();
                 readCount--;
                 if (readCount == 0) {
-                    writeLock.release(); // Letzter Leser gibt Schreibrecht frei
+                    writeLock.release();
                 }
                 mutex.release();
 
@@ -56,7 +53,7 @@ public class ReaderWriterProblem {
         @Override
         public void run() {
             try {
-                writeLock.acquire(); // Exklusiver Zugriff
+                writeLock.acquire();
 
                 // Schreibbereich
                 sharedData = "Daten von Writer " + writerId;
@@ -71,7 +68,6 @@ public class ReaderWriterProblem {
     }
 
     public static void main(String[] args) {
-        // Leser- und Schreiber-Threads starten
         for (int i = 1; i <= 3; i++) {
             new Thread(new Reader(i)).start();
         }

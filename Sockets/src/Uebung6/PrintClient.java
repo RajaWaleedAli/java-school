@@ -24,7 +24,7 @@ public class PrintClient extends Thread {
 
     public void run() {
         try (
-                Socket socket = new Socket("localhost", index);
+                Socket socket = new Socket("10.10.30.138", index);
                 BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 PrintWriter out = new PrintWriter(socket.getOutputStream(), true)
         ) {
@@ -41,20 +41,22 @@ public class PrintClient extends Thread {
                     }
                 }
             }).start();
-            while(true){
-                String response;
+            while (true) {
                 if (!userInput.get().isEmpty()) {
-                    out.println(userInput.get()+"\n");
-                    userInput.set(""); // Reset nach Senden
+                    out.println(userInput.get());
+                    userInput.set("");
                 }
-                if(in.ready()){
-                    if ((response = in.readLine()) != null) {
+                if (in.ready()) {
+                    String response = in.readLine();
+                    if (response != null) {
                         System.out.println(response);
                     }
                 }
+                Thread.sleep(100);
             }
+
         } catch (IOException e) {
             System.out.println("Verbindung verloren.");
-        }
+        } catch (InterruptedException e) {}
     }
 }
