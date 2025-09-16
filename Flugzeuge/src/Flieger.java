@@ -19,6 +19,9 @@ public class Flieger implements Runnable {
         try {
             int bahn;
             bahn=tower.anfordernLandebahn(id);
+            Thread.sleep(200);
+            Flughafen.landebahnen[bahn].release();
+            
             int flugzeit = 1000 + (int) (Math.random() * 3000);
             System.out.println(id + " fliegt für " + flugzeit + " ms.");
             Thread.sleep(flugzeit);
@@ -28,18 +31,15 @@ public class Flieger implements Runnable {
             System.out.println("Flugzeug " + id + " landet auf Landebahn " + bahn + ".");
 
             if ((Math.random() * 100) < 40) {
-                System.out.println("Flugzeug " + id + " ist abgestürzt auf Landebahn " + bahn + "!");
-                Flughafen.bahnLock[bahn].acquire();
-                Flughafen.bahnGesperrt[bahn] = true;
-                Flughafen.bahnLock[bahn].release();
-                //Feuerwehr code
+                tower.abgestuertzt(id, bahn, feuerwehr);
+                //Feuerwehr code,
             } else {
                 Thread.sleep(1000 + (int) (Math.random() * 1000));
                 System.out.println("Flugzeug " + id + " ist gelandet auf Landebahn " + bahn + ".");
-                Thread.sleep(1000); // fährt in den Hangar
+                Thread.sleep(1000);
             }
 
-            Flughafen.landebahnen[bahn].release();
+            tower.bahnFreigeben(bahn);
         }catch (InterruptedException e){
             System.out.println(id + " wurde unterbrochen.");
         }finally {
